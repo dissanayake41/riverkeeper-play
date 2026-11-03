@@ -1,0 +1,1 @@
+Official @supabase/supabase-js 2.118.0 UMD browser bundle, from npm. MIT license: SUPABASE-LICENSE.txt. Loaded only when cloud accounts are configured. No service-role secrets belong in browser files.
