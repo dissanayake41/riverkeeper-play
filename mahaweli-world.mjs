@@ -7,6 +7,7 @@ import {createTerrainSampler} from './mahaweli-terrain.mjs';
 import {GEOGRAPHY} from './spatial-data.mjs';
 import {HYDRO_SITES} from './hydro-sites.mjs';
 import {needsPlatform,buildingPlacement} from './building-placement.mjs';
+import {createLandPlacement} from './land-placement.mjs';
 import {createBasinWeather} from './mahaweli-weather.mjs';
 import {CONTEXT_BUFFER_KM,basinExtent,paintBasinMask,riverNetwork,riverRibbon} from './mahaweli-map-effects.mjs';
 // IWMI primary/secondary colours; categorical map overlays are separate from the blue HUD.
@@ -20,7 +21,7 @@ export function createWorld(container,onSelect,options={}){
  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
  const camera=new THREE.PerspectiveCamera(44,1,.1,2000),controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.12;controls.rotateSpeed=.7;controls.minDistance=14;controls.maxDistance=700;controls.minPolarAngle=.08;controls.maxPolarAngle=Math.PI*.43;
  controls.mouseButtons.LEFT=THREE.MOUSE.ROTATE;controls.mouseButtons.RIGHT=THREE.MOUSE.PAN;controls.touches.ONE=THREE.TOUCH.ROTATE;controls.touches.TWO=THREE.TOUCH.DOLLY_PAN;controls.screenSpacePanning=false;controls.zoomToCursor=true;controls.listenToKeyEvents(renderer.domElement);controls.cursorStyle='grab';
- let sampler,extent,flight=null,weather,weatherEnabled=true,lightningEnabled=true;
+ let sampler,extent,flight=null,weather,weatherEnabled=true,lightningEnabled=true,landPlacement;
  controls.addEventListener('start',()=>{flight=null;});
  const moveTo=(target,position,animate=true)=>{if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){flight={start:performance.now(),from:camera.position.clone(),fromTarget:controls.target.clone(),position,target};}else{flight=null;camera.position.copy(position);controls.target.copy(target);controls.update();}};
  const fit=(top=false,animate=true)=>{
@@ -143,6 +144,15 @@ export function createWorld(container,onSelect,options={}){
   }
   if(effects.effluent){for(const x of [-1.5,-.5]){addMesh(group,cylinder,concrete,x,.4,1.85,.4,.7,.4);addMesh(group,cylinder,blue,x,.77,1.85,.34,.035,.34);}}
  }
+ function positionSymbol(symbol,site,type){
+  const location=type==='hydro'&&HYDRO_SITES[site.id]||site,p=sampler.point(location.lon,location.lat,.18);
+  const scale=Math.max(.85,Math.min(1.8,Math.sqrt(site.areaKm2/100)*1.8));
+  const onLand=(needsPlatform(type)&&type!=='hydro'&&type!=='reservoir')||type==='orchard';
+  const anchor=onLand?landPlacement(site,scale):{x:p.x,z:p.z,scale};
+  symbol.userData.noDryFootprint=!anchor;
+  symbol.position.set(anchor?.x??p.x,anchor?sampler.surfaceHeight(anchor.x,anchor.z)+.18:p.y,anchor?.z??p.z);
+  symbol.scale.setScalar(anchor?.scale??scale);symbol.visible=showSites&&!!anchor;
+ }
  function plantPlatform(symbol){
   // Level the symbolic plant footprint above rugged terrain and carry its
   // retaining sides down to the ground, so towers are neither buried nor floating.
@@ -157,14 +167,14 @@ export function createWorld(container,onSelect,options={}){
  }
  let previewGroup=null,previewId=null,previewRotors=[];
  function clearPreview(){
-  if(previewId!==null){const old=objects.get(previewId);if(old){old.symbol.visible=showSites;old.disc.material.opacity=0;}}
+  if(previewId!==null){const old=objects.get(previewId);if(old){old.symbol.visible=showSites&&!old.symbol.userData.noDryFootprint;old.disc.material.opacity=0;}}
   if(previewGroup){scene.remove(previewGroup);previewGroup.traverse(o=>{if(o.isInstancedMesh)o.dispose();if(o.geometry&&!shared.has(o.geometry))o.geometry.dispose();if(o.material)o.material.dispose();});}
   for(const rotor of previewRotors){const i=windRotors.indexOf(rotor);if(i>=0)windRotors.splice(i,1);}previewRotors=[];previewGroup=null;previewId=null;
  }
  function preview(id,type){
   clearPreview();if(!ready||!sites[id])return;
   const site=sites[id],location=type==='hydro'&&HYDRO_SITES[id]||site,p=sampler.point(location.lon,location.lat,.18),group=new THREE.Group();
-  group.position.set(p.x,p.y,p.z);group.scale.setScalar(Math.max(.85,Math.min(1.8,Math.sqrt(site.areaKm2/100)*1.8)));
+  positionSymbol(group,site,type);
   const rotorStart=windRotors.length;if(needsPlatform(type))plantPlatform(group);building(group,type);architecturalDetails(group,type);previewRotors=windRotors.slice(rotorStart);
   group.traverse(o=>{if(!o.material)return;const material=o.material.clone();material.color.set('#46bbd4');material.transparent=true;material.opacity=.62;material.depthWrite=false;o.material=material;o.castShadow=false;});
   previewGroup=group;previewId=id;scene.add(group);const current=objects.get(id);if(current){current.symbol.visible=false;current.disc.material.color.set('#46bbd4');current.disc.material.opacity=.1;}
@@ -179,7 +189,7 @@ export function createWorld(container,onSelect,options={}){
    const geometry=new THREE.ShapeGeometry(shapes);geometry.rotateX(-Math.PI/2);const positions=geometry.attributes.position;for(let i=0;i<positions.count;i++)positions.setY(i,sampler.height(positions.getX(i),positions.getZ(i))+.22);geometry.computeVertexNormals();
    const disc=new THREE.Mesh(geometry,baseMat);disc.userData.tileId=t.id;g.add(disc);
    const cellLines=new THREE.Group();g.add(cellLines);for(const ring of parts.flat())line(ring,'#cce5dd',cellLines,.28,.22);cellLines.visible=gridVisible;for(const border of cellLines.children)border.material.userData.temporary=true;
-   const symbol=new THREE.Group();symbol.position.set(p.x,p.y,p.z);symbol.scale.setScalar(Math.max(.85,Math.min(1.8,Math.sqrt(site.areaKm2/100)*1.8)));symbol.visible=showSites;g.add(symbol);if(needsPlatform(t.type))plantPlatform(symbol);building(symbol,t.type);architecturalDetails(symbol,t.type);policyDetails(symbol,t);objects.set(t.id,{g,disc,cellLines,symbol});
+   const symbol=new THREE.Group();positionSymbol(symbol,site,t.type);g.add(symbol);if(needsPlatform(t.type))plantPlatform(symbol);building(symbol,t.type);architecturalDetails(symbol,t.type);policyDetails(symbol,t);objects.set(t.id,{g,disc,cellLines,symbol});
   }
  }
  function select(id){selected=id;for(const [key,o]of objects){o.disc.material.opacity=0;for(const border of o.cellLines.children){border.material.color.set(key===id?'#46bbd4':'#cce5dd');border.material.opacity=key===id?1:.22;}}}
@@ -269,6 +279,7 @@ export function createWorld(container,onSelect,options={}){
    });
    basinLabels.hidden=!borders;
 
+   landPlacement=createLandPlacement(sampler.frame,riverNetwork(rivers.features,sampler.frame));
    makeRivers(rivers.features,basinMask);
    weather=createBasinWeather({scene,sampler,boundary:mainBasin.geometry,sites,camera,reducedMotion,onWeather:options.onWeather,onThunder:options.onThunder});weather.setEnabled(weatherEnabled);weather.setLightning(lightningEnabled);
    ready=true;loading.remove();home();rebuild();select(selected);options.onReady?.({features,mainBasin,source:basins.source});return true;
@@ -309,8 +320,8 @@ export function createWorld(container,onSelect,options={}){
   pan(direction){flight=null;const vectors={left:[0,-1],right:[0,1],up:[1,1],down:[1,-1]},[axis,sign]=vectors[direction]||[0,0],step=camera.position.distanceTo(controls.target)*.11;const offset=new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld,axis).multiplyScalar(sign*step);camera.position.add(offset);controls.target.add(offset);controls.update();},
   focusRegion(region){if(!ready)return;const town=sites[tiles.find(t=>t.type==='town')?.id],coordinate=region==='upper'?[80.81,7.04]:town?[town.lon,town.lat]:[81.145,8.04],p=sampler.point(...coordinate),target=new THREE.Vector3(p.x,p.y,p.z);moveTo(target,target.clone().add(new THREE.Vector3(12,region==='upper'?36:27,region==='upper'?48:37)));},
   toggleBasins(){return showBasins(!borders);},
-  toggleGrid(){gridVisible=!gridVisible;for(const o of objects.values())o.cellLines.visible=gridVisible;return gridVisible;},toggleSites(){showSites=!showSites;for(const o of objects.values())o.symbol.visible=showSites&&o!==objects.get(previewId);return showSites;},
-  reveal(id){showSites=true;for(const o of objects.values())o.symbol.visible=o!==objects.get(previewId);this.focus(id);},
+  toggleGrid(){gridVisible=!gridVisible;for(const o of objects.values())o.cellLines.visible=gridVisible;return gridVisible;},toggleSites(){showSites=!showSites;for(const o of objects.values())o.symbol.visible=showSites&&!o.symbol.userData.noDryFootprint&&o!==objects.get(previewId);return showSites;},
+  reveal(id){showSites=true;for(const o of objects.values())o.symbol.visible=!o.symbol.userData.noDryFootprint&&o!==objects.get(previewId);this.focus(id);},
   focus(id){if(!ready||!sites[id])return;const p=objects.get(id)?.symbol.position||sampler.point(sites[id].lon,sites[id].lat),target=new THREE.Vector3(p.x,p.y,p.z);moveTo(target,target.clone().add(new THREE.Vector3(12,21,22)));},selectBasin:chooseBasin,siteInfo(id){if(!ready||!sites[id])return null;const s=sites[id];return {...s,basin:features.find(f=>String(f.properties.id)===s.basinId)};}};
 }
 
