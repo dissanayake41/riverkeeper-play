@@ -1,0 +1,14 @@
+# Settlement growth and public income
+
+The game separates natural change (births minus deaths) from people moving into the modeled basin. This follows the demographic accounting distinction described by the [UN Population Division](https://population.un.org/wpp/). It does not use measured Mahaweli migration or tax rates.
+
+- Natural growth retains the illustrative 1.2% annual rate; fractional people carry forward. Severe food or water shortages can produce negative change.
+- Each settlement offers 2,000 housing places and 240 job places. Existing displaced or overcrowded residents are accommodated before newcomers.
+- At most 300 newcomers per settlement per 30 days may enter, prorated for month length. This is an explicit gameplay settlement-uptake assumption, not a claimed real-world migration rate. Empty settlements receive newcomers first. Existing towns with vacancies can also attract people.
+- Basin job capacity must support the assumed 55% workforce share. Housing, wellbeing, environment and a solvent treasury also gate migration.
+- Candidate newcomers are placed in actual settlement cells and the water, food and power model is rerun. Migration is reduced until household supplies meet at least 99% of need, including the worst supplied inhabited sub-basin. Placing a new settlement automatically raises the household withdrawal request, if needed, to cover an initial wave of up to 300 people per 30 days (also limited by jobs and housing). This requests connected river water; it does not create water, change environmental allocation or guarantee delivery. Later growth still requires reviewing requests and supplies. Tests use this month's conditions, not a guarantee of future weather or supplies.
+- Residents arrive at month end; they start consuming resources and contributing taxes in the next month. Current-month income never taxes future residents. Natural growth remains possible without vacant housing; overcrowding still has consequences.
+- Employed workers pay income tax, scaled by supply reliability and month length. Worker tax is rounded to hundredths of a game credit, so small increases no longer vanish under whole-credit rounding. Unemployed residents and children do not automatically generate worker taxes. Production taxes remain separate.
+- Public-service costs scale with total population relative to the 1,200-person starting community. Buildings retain their separate upkeep. More residents can increase receipts and costs; gross receipts are not net treasury profit.
+
+The settlement panel and government ledger show arrivals, natural change, employment, current worker taxes and the added monthly worker-tax potential at current rates. A settlement preview includes changes before payment. Existing saves and past scores are retained; these rules apply to subsequent monthly projections.

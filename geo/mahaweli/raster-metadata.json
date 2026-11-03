@@ -1,0 +1,89 @@
+{
+  "bounds": [
+    80.35,
+    6.65,
+    81.45,
+    8.7
+  ],
+  "acquiredAtUtc": "2026-09-12T21:58:04.465820+00:00",
+  "imagery": {
+    "name": "Sentinel-2 cloudless 2016 by EOX",
+    "url": "https://tiles.maps.eox.at/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=s2cloudless&STYLES=&SRS=EPSG%3A4326&BBOX=80.35%2C6.65%2C81.45%2C8.7&WIDTH=2048&HEIGHT=4096&FORMAT=image%2Fjpeg",
+    "layer": "s2cloudless",
+    "crs": "EPSG:4326",
+    "width": 2048,
+    "height": 4096,
+    "bounds": [
+      80.35,
+      6.65,
+      81.45,
+      8.7
+    ],
+    "pixelInterpretation": "area; upper-left boundary is west,north; longitude varies linearly across columns, latitude linearly from north to south",
+    "pixelSizeDegrees": [
+      0.0005371093750000042,
+      0.0005004882812499997
+    ],
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenseEvidence": "https://eox.at/2017/08/sentinel-2-global-cloudless-mosaic/",
+    "attribution": "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016 & 2017)",
+    "modifications": "Geographic area extracted by EOX WMS; preview additionally downsampled."
+  },
+  "elevation": {
+    "name": "Mapzen Terrain Tiles on AWS, Terrarium",
+    "url": "https://registry.opendata.aws/terrain-tiles/",
+    "tileUrlTemplate": "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png",
+    "zoom": 10,
+    "nativeTileCrs": "EPSG:3857",
+    "tileRange": {
+      "x": [
+        740,
+        743
+      ],
+      "y": [
+        487,
+        493
+      ]
+    },
+    "tileCount": 28,
+    "encoding": "(red * 256 + green + blue / 256) - 32768 metres",
+    "encodingDocumentation": "https://github.com/tilezen/joerd/blob/master/docs/formats.md",
+    "attribution": "Mapzen Terrain Tiles; SRTM and GMTED2010 terrain data courtesy of the U.S. Geological Survey; global ETOPO1 terrain data courtesy of NOAA.",
+    "licenseDocumentation": "https://github.com/tilezen/joerd/blob/master/docs/attribution.md",
+    "modifications": "Terrarium RGB decoded to metres, reprojected by bilinear sampling to evenly spaced longitude/latitude vertices, rounded to 0.1 metre.",
+    "verticalDatum": "Source elevation metres; no vertical datum conversion applied. SRTM land data uses EGM96; ocean contains negative ETOPO1 bathymetric elevations.",
+    "sourceSelectionDocumentation": "https://github.com/tilezen/joerd/blob/master/docs/data-sources.md",
+    "nativeSampleSpacingAtExtentCenterMetres": 151.5045447117448,
+    "downloadedTiles": [
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/487.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/488.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/489.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/490.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/491.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/492.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/740/493.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/487.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/488.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/489.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/490.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/491.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/492.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/741/493.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/487.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/488.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/489.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/490.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/491.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/492.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/742/493.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/487.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/488.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/489.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/490.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/491.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/492.png",
+      "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/10/743/493.png"
+    ]
+  }
+}

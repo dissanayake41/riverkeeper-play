@@ -1,0 +1,42 @@
+// Original functional HUD icons, in a consistent rounded outline style.
+// Colour inherits from the IWMI palette in game3d.css; these are not IWMI logo assets.
+const paths={
+ rain:'M6 14a5 5 0 1 1 9-5 4 4 0 1 1 3 7 M7 17l-2 4 M12 17l-2 4 M17 17l-2 4',
+ cloud:'M6 18a5 5 0 1 1 9-9 4 4 0 1 1 3 9H6Z',
+ demolish:'M4 21h16 M6 21v-7l6-5 6 5v7 M3 4l6 6 M4 2l-2 2 4 4 2-2 M16 3l5 5 M18 2l4 4 M18 5l-7 7',
+ close:'m6 6 12 12 M18 6 6 18',
+ water:'M12 3C10 6 5 11 5 15a7 7 0 0 0 14 0c0-4-5-9-7-12Z M8 15a4 4 0 0 0 4 4',
+ people:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M19 8a4 4 0 0 1 0 8 M22 21v-2a4 4 0 0 0-3-3 M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0',
+ funds:'M20 8c0 2-4 3-8 3S4 10 4 8s4-3 8-3 8 1 8 3Z M4 8v5c0 2 4 3 8 3s8-1 8-3V8 M4 13v5c0 2 4 3 8 3s8-1 8-3v-5',
+ food:'M12 22V8 M12 16C5 16 4 11 4 8c5 0 8 3 8 8Z M12 12c0-6 4-9 8-9 0 5-3 9-8 9Z M12 21c0-6 4-9 8-9 0 5-3 9-8 9Z',
+ energy:'m13 2-9 12h7l-1 8 10-12h-8l1-8Z',
+ wellbeing:'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',
+ ecology:'M20 3C9 2 3 6 3 13a7 7 0 0 0 7 7c7 0 10-8 10-17Z M3 22 15 10',
+ score:'M7 3h10v6a5 5 0 0 1-10 0V3Z M7 5H3v3a4 4 0 0 0 5 4 M17 5h4v3a4 4 0 0 1-5 4 M12 14v5 M8 21h8 M9 19h6',
+ build:'m3 10 9-7 9 7 M5 9v12h14V9 M9 21v-7h6v7',
+ govern:'m3 9 9-6 9 6H3Z M5 9v10 M10 9v10 M14 9v10 M19 9v10 M2 21h20',
+ market:'M3 7h17l-4-4 M21 17H4l4 4',
+ report:'M4 21h16 M6 17v-5 M12 17V4 M18 17V8',
+ layers:'m12 3 10 6-10 6L2 9l10-6Z M2 13l10 6 10-6 M2 17l10 6 10-6',
+ basin:'m3 5 6-2 6 3 6-2v15l-6 2-6-3-6 2V5Z M9 3v15 M15 6v15',
+ storage:'M4 6h16v14H4V6Z M4 13c3-3 5 3 8 0s5 3 8 0 M7 3h10',
+ sound:'M3 9h4l5-5v16l-5-5H3V9Z M16 8a6 6 0 0 1 0 8 M19 5a10 10 0 0 1 0 14',
+ solar:'M3 12h18l1 8H2l1-8Z M8 12l-1 8 M16 12l1 8 M3 16h18 M12 3v2 M5 5l2 2 M19 5l-2 2 M9 9a3 3 0 0 1 6 0',
+ wind:'M12 10v12 M12 10l-2-8 4 1-2 7Z M12 10l8 2-2 4-6-6Z M12 10l-6 6-3-3 9-3Z',
+ coal:'M3 21V11l6 3v-3l6 3V8h4l2 13H3Z M15 5V3 M19 4V2 M6 18h1 M11 18h1 M17 18h1',
+ hydro:'M5 3h14l-2 12H7L5 3Z M9 3v12 M15 3v12 M2 19q3-3 6 0t6 0 6 0 M2 22q3-3 6 0t6 0 6 0',
+ nuclear:'M6 21H2l3-5 1-9h7l1 9 3 5H6Z M6 4h7 M18 8a3 3 0 0 1 0 6 M18 5a6 6 0 0 1 0 12 M18 20h4',
+ construct:'m4 3 4 1 2 3-3 3-3-2-1-4 M8 9l12 12 M20 3l-4 4 1 3 3 1 3-4a6 6 0 0 1-8 8L6 23l-4-4 9-9a6 6 0 0 1 9-7Z',
+ grid:'M8 2l5 3v6l-5 3-5-3V5l5-3Z M13 5l5-3 5 3v6l-5 3-5-3 M8 14v6l5 3 5-3v-6',
+ mountain:'m2 20 7-15 5 10 3-7 5 12H2Z M6.7 10l2.3 2 2.3-2',
+ mouth:'M3 6c3-3 4 3 7 0s4 3 7 0 4 0 4 0 M3 12c3-3 4 3 7 0s4 3 7 0 4 0 4 0 M3 18c3-3 4 3 7 0s4 3 7 0 4 0 4 0',
+ home:'M8 3H3v5 M16 3h5v5 M3 16v5h5 M21 16v5h-5 M8 12h8 M12 8v8',
+ top:'m12 3 9 9-9 9-9-9 9-9Z M12 8v8 M8 12h8',
+ rotate:'M20 7V2l-3 3a8 8 0 1 0 3 12 M20 7h-5',
+ pan:'M12 3v18 M3 12h18 M8 6l4-4 4 4 M8 18l4 4 4-4 M6 8l-4 4 4 4 M18 8l4 4-4 4',
+ plus:'M12 5v14 M5 12h14',minus:'M5 12h14',menu:'M4 6h16 M4 12h16 M4 18h16',
+ fullscreen:'M8 3H3v5 M16 3h5v5 M3 16v5h5 M21 16v5h-5',
+ north:'m12 3-6 16 6-4 6 4-6-16Z',up:'m6 14 6-6 6 6',down:'m6 10 6 6 6-6',left:'m14 6-6 6 6 6',right:'m10 6 6 6-6 6'
+};
+export function icon(name){return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[name]||paths.water}"/></svg>`;}
+export function mountIcons(root=document){root.querySelectorAll('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon);});}
