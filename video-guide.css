@@ -1,0 +1,18 @@
+.game3d .video-guide-launcher{position:absolute;z-index:6;top:76px;right:76px;display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #8edce080;border-radius:24px;background:#173d52ed;color:white;font:600 12px system-ui,sans-serif;box-shadow:0 3px 16px #0003;cursor:pointer}
+.video-guide-launcher svg{width:20px;height:20px}.game3d .video-guide-launcher:hover{background:#28537d}.video-guide-launcher:focus-visible,#video-guide-dialog :focus-visible{outline:3px solid #46bbd4;outline-offset:3px}
+#video-guide-dialog{box-sizing:border-box;width:min(1000px,calc(100vw - 28px));max-width:1000px;max-height:94dvh;padding:0;overflow:auto;border:1px solid #87cbd666;border-radius:22px;background:#102d41;color:#fff;box-shadow:0 30px 100px #000b;font-family:system-ui,sans-serif}
+#video-guide-dialog::backdrop{background:#03121ce3;backdrop-filter:blur(6px)}
+.video-guide-heading{position:relative;display:flex;align-items:start;justify-content:space-between;gap:16px;padding:21px 24px;background:linear-gradient(120deg,#28537d,#103c4c)}
+#video-guide-dialog .video-guide-kicker{font-size:10px;font-weight:700;letter-spacing:.13em;color:#9be3e6}
+#video-guide-dialog h2{font:600 clamp(18px,2.5vw,26px)/1.2 system-ui,sans-serif;color:white;margin:8px 0}
+#video-guide-dialog p{color:#c6e0e8;font:13px/1.5 system-ui,sans-serif;margin:0}
+#video-guide-dialog .video-guide-close{flex-shrink:0;position:sticky;top:10px;width:38px;height:38px;padding:0;border:1px solid #ffffff4d;border-radius:50%;background:#ffffff13;color:white;font:28px/1 system-ui;cursor:pointer}
+#video-guide-player{display:block;width:100%;max-height:max(150px,calc(94dvh - 270px));aspect-ratio:16/9;object-fit:contain;background:#000}
+#video-guide-dialog .video-guide-status:empty{display:none}#video-guide-dialog .video-guide-status{padding:10px 24px;color:#ffe0a6}
+.video-guide-chapters{display:flex;gap:8px;flex-wrap:wrap;padding:16px 24px 8px}
+#video-guide-dialog .video-guide-chapters button{background:#ffffff0b;color:#fff;border:1px solid #80c6d04d;border-radius:10px;padding:9px 12px;font:600 12px system-ui;cursor:pointer}.video-guide-chapters small{color:#a8cdd7;margin-left:6px;font-weight:400}
+#video-guide-dialog button:hover{background:#28537d}
+.video-guide-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 24px 18px;color:#a8cdd7;font-size:11px}
+#video-guide-dialog .video-guide-return{background:#0297a6;border:1px solid #65cbd4;border-radius:10px;color:#fff;padding:10px 14px;font:600 12px system-ui;cursor:pointer}
+@media(max-width:920px) and (min-width:601px){.game3d .video-guide-launcher{top:128px}}
+@media(max-width:600px){.game3d .video-guide-launcher{top:146px;right:14px;padding:8px 11px;font-size:11px}.video-guide-heading{padding:16px}.video-guide-chapters{padding:12px 16px 6px;gap:6px}.video-guide-footer{padding:8px 16px 15px;flex-wrap:wrap}#video-guide-dialog .video-guide-chapters button{font-size:11px;padding:8px}#video-guide-dialog{border-radius:16px}}

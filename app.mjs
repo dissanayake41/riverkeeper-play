@@ -11,10 +11,12 @@ import {createDevelopmentUI} from './development-ui.mjs';
 import {createWorld} from './mahaweli-world.mjs';
 import {POWER,HYDRO_SITES,isPower,activatePowerProjects} from './power.mjs';
 import {monthLabel,monthDays,climateQuarter,quarterFraction} from './calendar.mjs';
-import {createAmbience} from './ambience.mjs';
+import {createAmbience} from './ambience.mjs?v=video-guide-20261105';
+import {createVideoGuide} from './video-guide.mjs';
 import {icon,mountIcons} from './ui-icons.mjs';
 mountIcons();
 const ambience=createAmbience(document.querySelector('#sound-toggle'),document.querySelector('#sound-volume'),document.querySelector('#sound-status'));
+createVideoGuide({ambience});
 const $=s=>document.querySelector(s),escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state=newGame(),selected=29,timer,storageAvailable=true,world,studio,adviser,accounts,mission;
 try{const saved=JSON.parse(localStorage.getItem('riverkeeper-v3'));if(validSave(saved))state=saved;else{const migrated=migrateSave(saved)||migrateSave(JSON.parse(localStorage.getItem('riverkeeper-v2')))||migrateSave(JSON.parse(localStorage.getItem('riverkeeper-v1')));if(migrated){if(saved){localStorage.setItem(saved.gridId==='mahaweli-grid-v2'?'riverkeeper-v3-before-hex':'riverkeeper-v3-before-monthly',JSON.stringify(saved));}state=migrated;localStorage.setItem('riverkeeper-v3',JSON.stringify(state));}}}catch{storageAvailable=false;}
